@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+
+        * {
+            font-family: 'Segoe UI';
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+
+
+
+        .container {
+            width: 800px;
+            margin: auto;
+            border: 1px solid black;
+            padding: 10px;
+            margin-top: 20px;
+            display:flex;
+            flex-direction:column;
+            position:relative; 
+        }
+
+            .container h2 {
+                text-align: center;
+                font-weight:100; 
+            }
+
+            .usertitle{
+                padding:5px;
+            }
+
+            .userbody{
+                height:150px;
+                padding:5px;
+            }
+
+            .container button{
+                margin-top:10px;
+                font-size:16px;
+                text-transform:uppercase;
+                cursor:pointer; 
+            }
+
+        .abc {
+            margin-top: 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border:1px solid black;
+            text-align:center; 
+        }
+
+            .container label{
+                margin-bottom:10px;
+            }
+
+            .photo{
+                width:200px;
+                border:1px solid black;
+                padding:5px;
+                margin-top:10px;
+                text-align:center; 
+                cursor:pointer; 
+            }
+
+        .image_container {
+            //border: 1px solid black;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        .profilephoto {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            border: 1px solid red;
+            border-radius: 50%;
+        }
+
+           
+
+        .photo{
+            margin-left:370px;
+            width:350px;
+        }
+
+        .hide{
+            display:none; 
+        }
+    </style>
+</head>
+<body>
+    <form class="container">
+        <h2 style="margin-bottom:10px;"><span class="p"></span> Profile</h2>
+        <center><div class="image_container"><img src="" class="profilephoto" /></div></center>
+        <label for="usertitle">Username</label>
+        <input type="text" class="usertitle" disabled />
+        <label for="userbody">Bio</label>
+        <textarea class="userbody" disabled></textarea>
+        <br/>
+        <p>No of Followers:<span class="f1"></span></p>
+        <p>Following:<span class="f2"></span></p>
+        <br/>
+        <span class="abc"><a href="user_list.html">Go Back</a></span>
+
+    </form>
+
+    
+
+    <script>
+        
+        
+
+        window.addEventListener('DOMContentLoaded', function () {
+
+            let url = window.location.search;
+            console.log(url)
+            
+            const urlParams = new URLSearchParams(url);
+            const id = urlParams.get('id')
+            console.log(id)
+            
+
+            fetch(`http://localhost:3000/userprofile/${id}`)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    console.log(data)
+                    console.log(data.user[0].name)
+                    console.log(data.user[0].bio) 
+
+                    //insert these into html elements 
+                    document.querySelector('.p').innerText = data.user[0].name;
+                    document.querySelector('.usertitle').value = data.user[0].name; 
+                    document.querySelector('.userbody').value = data.user[0].bio; 
+                    document.querySelector('.profilephoto').src = data.user[0].profile;
+                    document.querySelector('.f1').innerText = data.user[0].followers.length;
+                    document.querySelector('.f2').innerText = data.user[0].following.length;
+
+
+                })
+        })
+    </script>
+</body>
+</html>

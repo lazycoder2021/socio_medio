@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        * {
+            font-family: 'Segoe UI';
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        a{
+            text-decoration:none; 
+            color:black;
+        }
+
+        h2, span {
+            font-weight: 100;
+        }
+
+        .container {
+            width: 1000px;
+            margin: auto;
+            border: 1px solid black;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .container h2{
+            text-align:center; 
+        }
+
+        .container .logout{
+            border:1px solid black;
+            padding:6px;
+            float:right;
+            cursor:pointer;
+        }
+
+        .profile {
+            border: 1px solid black;
+            padding: 6px;
+            float: right;
+            cursor: pointer;
+        }
+
+        .post, .view {
+            border: 1px solid black;
+            padding: 6px;
+            float: left;
+            cursor: pointer;
+        }
+
+        .feed, .feed1 {
+            margin: auto;
+            width: 200px;
+            padding: 6px;
+            cursor: pointer;
+            border:1px solid black;
+            text-align:center; 
+            
+        }
+
+        .container .logout:hover{
+            background-color:black; 
+            color:white; 
+            border-radius:4px;
+        }
+
+        .profile:hover {
+            background-color: black;
+            color: white;
+            border-radius: 4px;
+        }
+
+        
+
+        .user{
+            //border:1px solid black;
+            width:100%; 
+            margin:10px 0px;
+            padding:10px;
+            border-radius:4px;
+            display:flex;
+            align-items:center; 
+            justify-content:center; 
+            position:relative; 
+        }
+
+        .popup{
+            position:absolute; 
+            top:0px;
+            left:0px;
+            width:100px;
+            height:100px;
+            background-color:blue;
+            opacity:0.3;
+        }
+
+        .user_left, .user_right, .user_stats{
+            border:1px solid black;
+            height:100px;
+            text-align:center; 
+        }
+
+        .user_left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+        }
+
+        .user_right {
+            flex: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+
+        .user_stats {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fbtn, .ufbtn{
+            border:1px solid black;
+            padding:5px;
+            cursor:pointer; 
+        }
+
+        .fbtn:hover, .ufbtn:hover{
+            background-color:black;
+            color:white; 
+            border-radius:4px;
+        }
+
+        .user_pic{
+            height:70px;
+            width:70px;
+            border-radius:50%; 
+            border:1px solid black;
+            font-size:10px;
+            display:flex;
+            justify-content:center;
+            align-items:center; 
+        }
+
+        .user_pic img{
+            width:100%; 
+            height:100%; 
+            object-fit:cover; 
+        }
+
+        .hide{
+            display:none; 
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="post"><a href="/post.html">Create Post</a></span>
+        <span class="view">View Your Posts</span>
+        <span class="logout">LOGOUT</span>
+        <a class="profile" href="./profile.html">YOUR PROFILE</a>
+        <h2 style="margin-bottom:20px;">Welcome <span class="username">to Thoughts Community</span></h2>
+        <div class="feed">View Your Feed</div>
+        <a class="feed1" href="posts.html">View All Posts</a>
+        <div class="users">
+
+        </div>
+
+    </div>
+    <script>
+        var userId; 
+        if (localStorage.getItem('userId')) {
+            window.addEventListener('DOMContentLoaded', function () {
+                document.querySelector('.username').innerText = localStorage.getItem('userName'); 
+
+                fetch('http://localhost:3000/fetch')
+                    .then((res) => {
+                        return res.json()
+                    })
+                    .then((data) => {
+                        console.log(data.users)
+                        //data.users.following.length;
+
+                        console.log(data.users.length)
+                        console.log(data.users.length/2)
+
+
+                        data.users.forEach((u) => {
+                            document.querySelector('.users').innerHTML += `
+                            <div class="user" data-id=${u._id} data-followers=${u.followers.length}>
+                                <div class="user_left"><div class="user_pic"><a href="userprofile.html?id=${u._id}" class="profilelink"><img src=${u.profile} /></a></div></div>
+                                <div class="user_right">${u.name} -- ${u.bio}</div>
+                                <div class="user_stats"><br /><span class="fbtn">FOLLOW</span><span class="ufbtn">UNFOLLOW</span></div>
+                                <div class="popup hide">message goes here</div>
+                            </div>
+                            `;
+                        })
+
+                        
+                        document.querySelectorAll('.fbtn').forEach((f) => {
+                            console.log(f.parentElement.parentElement.dataset.followers)
+                            userId = localStorage.getItem('userId'); 
+                            //console.log(userId)
+                            var followId = f.parentElement.parentElement.dataset.id;
+                            
+                            //console.log(followId)
+                            f.addEventListener('click', function () {
+                                f.innerText = 'Following'; 
+                                fetch(`http://localhost:3000/following/${userId}`, {
+                                    method: 'PUT', 
+                                    headers: {
+                                        'Content-Type': 'application/json', 
+                                        'Accept': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        followId: followId
+                                    })
+                                })
+                            })
+                        })
+
+                        document.querySelectorAll('.ufbtn').forEach((u) => {
+                            //console.log(f.parentElement.parentElement.dataset.id)
+                            userId = localStorage.getItem('userId');
+                            //console.log(userId)
+                            var unfollowId = u.parentElement.parentElement.dataset.id;
+                            //console.log(unfollowId)
+                            u.addEventListener('click', function () {
+                                u.innerText = 'Unfollowed';
+                                fetch(`http://localhost:3000/unfollows/${userId}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Accept': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        unfollowId: unfollowId
+                                    })
+                                })
+                            })
+                        })
+                         
+                    })
+                    .catch((e) => {
+                        console.log(e)
+                    })
+            })
+        } else {
+            window.location.href = '/index.html'
+        }
+
+        document.querySelector('.logout').addEventListener('click', async function () {
+            alert('logout successful')
+            localStorage.clear(); 
+            await fetch('http://localhost:3000/logout')
+                .then((res) => {
+                    res.json(); 
+                })
+                .then((data) => {
+                    console.log(data)
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+            window.location.href = '/index.html'
+        })
+
+
+        document.querySelector('.feed').addEventListener('click', function () {
+            //alert('show feed...')
+            var userId = localStorage.getItem('userId'); 
+            fetch(`http://localhost:3000/feed/${userId}`)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    console.log(data)
+                    var obj = data.followerPosts;
+                    console.log((obj))
+                    
+                    
+                })
+        })
+
+        /*
+        document.querySelector('.feed1').addEventListener('click', function () {
+            alert('feed1.....')
+            const userId = localStorage.getItem('userId'); 
+            console.log(localStorage.getItem('userId')); 
+            fetch(`http://localhost:3000/read`)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    console.log(data)
+                })
+        })
+        */
+        
+
+        
+    </script>
+</body>
+</html>

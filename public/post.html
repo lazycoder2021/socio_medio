@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+
+        * {
+            font-family: 'Segoe UI';
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+
+
+
+        .container {
+            width: 800px;
+            margin: auto;
+            border: 1px solid black;
+            padding: 10px;
+            margin-top: 20px;
+            display:flex;
+            flex-direction:column;
+            position:relative; 
+        }
+
+            .container h2 {
+                text-align: center;
+                font-weight:100; 
+            }
+
+            .title{
+                padding:5px;
+            }
+
+            .body{
+                height:150px;
+                padding:5px;
+            }
+
+            .container button{
+                margin-top:10px;
+                font-size:16px;
+                text-transform:uppercase;
+                cursor:pointer; 
+            }
+
+        .container .abc {
+            margin-top: 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+            cursor: pointer;  
+            border:1px solid black;
+            text-align:center; 
+            text-decoration:none; 
+            color:black;
+        }
+
+            .container label{
+                margin-bottom:10px;
+            }
+
+            .attach{
+                width:200px;
+                border:1px solid black;
+                padding:5px;
+                margin-top:10px;
+                text-align:center; 
+                cursor:pointer; 
+            }
+
+        
+
+        .hide{
+            display:none; 
+        }
+
+        #xyz{
+            margin-left:360px;
+            margin-top:20px;
+        }
+    </style>
+</head>
+<body>
+    <form class="container">
+        <p>Note: to upload a post with image, i) first upload the image (choose file + submit button) and ii) then copy the url (as suggested in the server response) and paste that in the image url input box before clicking create post button.</p>
+        <h2>Create A Post</h2>
+        <label for="title">Title</label>
+        <input type="text" class="title" />
+        <label for="body">Body</label>
+        <textarea class="body"></textarea>
+        <label for="title">Image URL</label>
+        <input type="text" class="url" />
+
+
+
+        <button type="submit">Create Post</button>
+        <span class="abc"><a href="user_list.html">Go Back</a></span>
+    </form>
+
+    <form method="POST" action="/postupload" enctype="multipart/form-data" id="xyz">
+        <input type="file" class="upload" name="myfile2" style="margin:10px;" /><input type="submit" style="width:200px;" />
+    </form>
+
+    <script>
+        document.querySelector('.container').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            console.log(document.querySelector('.title').value + document.querySelector('.body').value)
+            alert('post created successfully')
+
+            fetch('http://localhost:3000/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: document.querySelector('.title').value, 
+                    body: document.querySelector('.body').value,
+                    userId: localStorage.getItem('userId'), 
+                    postImage: document.querySelector('.url').value
+                })
+            }).then((res) => {
+                return res.json()
+            }).then((data) => {
+                console.log(data)
+            })
+             
+            //window.location.href = '/user_list.html';
+        })
+    </script>
+</body>
+</html>

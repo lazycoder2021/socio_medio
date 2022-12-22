@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+
+        * {
+            font-family: 'Segoe UI';
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+
+
+
+        .container {
+            width: 800px;
+            margin: auto;
+            border: 1px solid black;
+            padding: 10px;
+            margin-top: 20px;
+            display:flex;
+            flex-direction:column;
+            position:relative; 
+        }
+
+            .container h2 {
+                text-align: left;
+                font-weight:100; 
+            }
+
+            .title{
+                padding:5px;
+            }
+
+            .body{
+                height:150px;
+                padding:5px;
+            }
+
+            .container button{
+                margin-top:10px;
+                font-size:16px;
+                text-transform:uppercase;
+                cursor:pointer; 
+            }
+
+        .container .abc {
+            margin-top: 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+            cursor: pointer;  
+            border:1px solid black;
+            text-align:center; 
+            text-decoration:none; 
+            color:black;
+        }
+
+            .container label{
+                margin-bottom:10px;
+            }
+
+            .attach{
+                width:200px;
+                border:1px solid black;
+                padding:5px;
+                margin-top:10px;
+                text-align:center; 
+                cursor:pointer; 
+            }
+
+            .lii{
+                float:right;
+                //border:1px solid black;
+                width:100px;
+            }
+
+            .cc{
+                font-style:italic; 
+            }
+        
+
+        .hide{
+            display:none; 
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+
+            <h2 class="title"></h2>
+            <textarea class="body" disabled>body</textarea>
+            <img src="" class="photo"/>
+            <span class="lii">Likes:<span class="li">12</span></span>
+            <div class="comments">
+                <p class="cc"></p>
+            </div>
+            <br />
+            <textarea class="comment_content" style="margin-bottom:10px;" placeholder="Add your comments here..."></textarea>
+            <span style="border:1px solid black; width:150px;text-align:center;cursor:pointer;" class="adder">Add Comment</span>
+            <span class="abc"><a href="user_list.html">Go Back</a></span>
+
+        </div>
+    </div>
+
+    <script>
+         
+        window.addEventListener('DOMContentLoaded', function () {
+            //console.log(window.location.search)
+            let url = window.location.search;
+            console.log(url)
+            const urlParams = new URLSearchParams(url);
+            const id = urlParams.get('id')
+            //console.log(id)
+
+            const userId = localStorage.getItem('userId'); 
+
+            fetch(`http://localhost:3000/findpost/${id}`)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    console.log(data)
+                    console.log(data.posttobefound.postImage)
+                    document.querySelector('.title').innerText = data.posttobefound.title;
+                    document.querySelector('.body').innerText = data.posttobefound.body;
+                    document.querySelector('.photo').src = data.posttobefound.postImage;
+                })
+
+            
+            fetch(`http://localhost:3000/comment/${id}`)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    console.log(data.listofcomments)
+                    data.listofcomments.forEach((c) => {
+                        document.querySelector('.comments').innerHTML += `
+                            <p class="cc">${c}</p>
+                        `; 
+
+                    }) 
+                   
+                })
+            
+            
+        })
+
+        let url = window.location.search;
+        console.log(url)
+        const urlParams = new URLSearchParams(url);
+        const id = urlParams.get('id')
+
+
+
+        document.querySelector('.adder').addEventListener('click', function () {
+            fetch(`http://localhost:3000/comment/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    comment: document.querySelector('.comment_content').value,
+                })
+            }).then((res) => {
+                return res.json()
+            }).then((data) => {
+                console.log(data)
+            })
+        })
+
+
+        
+            
+
+           
+        
+            
+            
+    </script>
+</body>
+</html>

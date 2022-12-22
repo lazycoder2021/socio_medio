@@ -1,0 +1,343 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        *{
+            font-family: 'Segoe UI'; 
+            margin:0px;
+            padding:0px;
+            box-sizing:border-box; 
+        }
+        h2, span{
+            font-weight:100; 
+        }
+
+        .title{
+            font-size:70px;
+        }
+
+        .sub {
+            font-size: 35px;
+        }
+
+        .hide{
+            display:none; 
+        }
+
+        .index, .reg-form, .login-form{
+            //border:1px solid black;
+            padding:5px;
+            width:600px;
+            margin:200px auto; 
+            text-align:center; 
+            position:relative;
+        }
+
+        
+
+        .buttons {
+            margin-top: 15px;
+            
+        }
+
+        .btn{
+            border:1px solid black; 
+            padding:3px 6px;
+            width:250px;
+            height:30px;
+            display:inline-block; 
+        }
+
+        .btn:hover{
+            background-color:black;
+            color:white; 
+            cursor:pointer; 
+        }
+
+        .reg-form, .login-form{
+            text-align:left;
+            border:1px solid black;
+            padding:20px 15px;
+            border-radius:4px;
+        }
+
+        .reg-form label, .login-form label{
+            margin-bottom:5px;
+            display:inline-block;
+        }
+
+            .reg-form input, .login-form input {
+                width: 100%;
+                font-size: 16px;
+                margin-bottom:10px;
+                padding:4px;
+            }
+
+        .reg-form button, .login-form button{
+            width:100%; 
+            margin-top:10px;
+            font-size:16px;
+            height:30px;
+        }
+
+            .reg-form button:hover {
+                background-color: black;
+                color: white;
+                cursor: pointer;
+            }
+
+            .login-form button:hover {
+                background-color: black;
+                color: white;
+                cursor: pointer;
+            }
+
+        .back_btn1, .back_btn2 {
+            text-decoration: none;
+            padding: 4px;
+            border: 1px solid black;
+            margin-top: 8px;
+            display: inline-block;
+            width: 100%;
+            text-align:center; 
+            text-transform:uppercase;
+            font-size: 16px;
+            height: 30px;
+        }
+
+            .back_btn1:hover {
+                background-color:black;
+                color:white; 
+            }
+
+                .back_btn2:hover {
+                    background-color: black;
+                    color: white;
+                }
+
+                .msg, .msg1{
+                    position:absolute; 
+                    top:270px;
+                    left:0px;
+                    border:1px solid black;
+                    width:600px;
+                    text-align:center; 
+                    background-color:green; 
+                    color:white; 
+                    padding:3px;
+                }
+
+        .err,.err1 {
+            position: absolute;
+            top: 270px;
+            left: 0px;
+            border: 1px solid black;
+            width: 600px;
+            text-align: center;
+            background-color: tomato;
+            color: white;
+            padding: 3px;
+        }
+
+        
+
+    </style>
+</head>
+<body>
+    <div class="index">
+        <h2 class="title">Thoughts</h2>
+        <span class="sub">Share Your Thoughts With The World.</span>
+        <div class="buttons">
+            <span class="btn btn-register">Register</span>
+            <span class="btn btn-login">Login</span>
+            <div class="read" style="margin-top:30px;text-decoration:underline;cursor:pointer;font-size:20px;"><a href="readme.html">READ ME</a></div>
+        </div>
+    </div>
+
+    <form class="reg-form hide" method="POST">
+        <label for="name">NAME</label>
+        <input type="text" class="name" placeholder="ENTER YOUR NAME" />
+        <label for="pass">PASSWORD</label>
+        <input type="password" class="pass" placeholder="ENTER YOUR PASSWORD" />
+        <button type="submit">REGISTER</button>
+        <a href="#" class="back_btn1">Go Back</a>
+        <div class="msg hide">Registration Successful</div>
+        <div class="err hide">Registration Failed</div>
+    </form>
+
+
+    <form class="login-form hide">
+        <label for="name1">NAME</label>
+        <input type="text" class="name1" placeholder="ENTER YOUR NAME" />
+        <label for="pass1">PASSWORD</label>
+        <input type="text" class="pass1" placeholder="ENTER YOUR PASSWORD" />
+        <button type="submit">LOGIN</button>
+        <a href="#" class="back_btn2">Go Back</a>
+        <div class="msg1 hide">Login Successful</div>
+        <div class="err1 hide">Login Failed</div>
+    </form>
+
+    
+
+    <script>
+        document.querySelector('.btn-register').addEventListener('click', function () {
+            document.querySelector('.index').classList.add('hide');
+            document.querySelector('.reg-form').classList.remove('hide');
+        })
+
+        document.querySelector('.btn-login').addEventListener('click', function () {
+            document.querySelector('.index').classList.add('hide');
+            document.querySelector('.login-form').classList.remove('hide');
+        })
+
+        document.querySelector('.back_btn1').addEventListener('click', function () {
+           
+            document.querySelector('.index').classList.remove('hide');
+            document.querySelector('.reg-form').classList.add('hide');
+        })
+
+        document.querySelector('.back_btn2').addEventListener('click', function () {
+            document.querySelector('.index').classList.remove('hide');
+            document.querySelector('.login-form').classList.add('hide');
+        })
+
+        /*
+
+        document.querySelector('.reg-form').addEventListener('submit', function () {
+            var name = document.querySelector('.name').value; 
+            var password = document.querySelector('.pass').value; 
+            alert(name + password)
+            fetch(`http://localhost:3000/register?name=${name}&password=${password}`, {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json', 
+                    'Accept': 'application/json'
+                }
+            }).then((res) => {
+                return res.json()
+            }).then((data) => {
+                console.log(data)
+                alert('registration successful')
+                
+            })
+        })
+
+        */
+
+        document.querySelector('.reg-form').addEventListener('submit', function (e) {
+            e.preventDefault()
+            
+
+            var name = document.querySelector('.name').value; 
+            var pass = document.querySelector('.pass').value; 
+
+            //alert(name + pass)
+
+            fetch('http://localhost:3000/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', 
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name, 
+                    password: pass
+                })
+            }).then((res) => {
+                return res.json()
+            }).then((data) => {
+                console.log(data)
+
+                
+
+                if (data.msg == "name/password cannot be left empty") {
+                    document.querySelector('.err').classList.remove('hide');
+                    setInterval(() => {
+                        document.querySelector('.err').classList.add('hide');
+                    }, 2000)
+
+                } else if (data.msg == "user created successfully") {
+                    document.querySelector('.msg').classList.remove('hide');
+                    setInterval(() => {
+                        document.querySelector('.msg').classList.add('hide');
+                    }, 2000)
+                } else {
+                    document.querySelector('.err').classList.remove('hide');
+                    setInterval(() => {
+                        document.querySelector('.err').classList.add('hide');
+                    }, 2000)
+                }
+                
+
+                
+                 
+            })
+
+        })
+
+
+
+
+        document.querySelector('.login-form').addEventListener('submit',  function (e) {
+            e.preventDefault()
+
+
+            var name = document.querySelector('.name1').value;
+            var pass = document.querySelector('.pass1').value;
+
+            //alert(name + pass)
+
+            fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    password: pass
+                })
+            }).then((res) => {
+                return res.json()
+            }).then((data) => {
+                //console.log(data.user._id)
+
+                if (data.msg == "login failed, passwords don't match" || data.msg == "user does not exist") {
+                    document.querySelector('.err1').classList.remove('hide');
+                    setInterval(() => {
+                        document.querySelector('.err1').classList.add('hide');
+                    }, 2000)
+
+                } else if (data.msg == "login successful") {
+                    document.querySelector('.msg1').classList.remove('hide');
+                    setInterval(() => {
+                        document.querySelector('.msg1').classList.add('hide');
+                    }, 2000)
+                    localStorage.setItem('userId', data.user._id)
+                    localStorage.setItem('userName', data.user.name)
+
+                    window.location.href = './user_list.html'; 
+                } else {
+                    document.querySelector('.err1').classList.remove('hide');
+                    setInterval(() => {
+                        document.querySelector('.err1').classList.add('hide');
+                    }, 2000)
+                }
+
+
+
+
+            })
+
+        })
+
+
+
+
+
+    </script>
+</body>
+</html>

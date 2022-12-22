@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+
+        * {
+            font-family: 'Segoe UI';
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+
+
+
+        .container {
+            width: 800px;
+            margin: auto;
+            border: 1px solid black;
+            padding: 10px;
+            margin-top: 20px;
+            display:flex;
+            flex-direction:column;
+            position:relative; 
+        }
+
+            .container h2 {
+                text-align: center;
+                font-weight:100; 
+            }
+
+            .title{
+                padding:5px;
+            }
+
+            .body{
+                height:150px;
+                padding:5px;
+            }
+
+            .container button{
+                margin-top:10px;
+                font-size:16px;
+                text-transform:uppercase;
+                cursor:pointer; 
+            }
+
+        .container .abc {
+            margin-top: 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+            cursor: pointer;  
+            border:1px solid black;
+            text-align:center; 
+            text-decoration:none; 
+            color:black;
+        }
+
+            .container label{
+                margin-bottom:10px;
+            }
+
+            .attach{
+                width:200px;
+                border:1px solid black;
+                padding:5px;
+                margin-top:10px;
+                text-align:center; 
+                cursor:pointer; 
+            }
+
+            .lii{
+                float:right;
+                //border:1px solid black;
+                width:100px;
+            }
+
+        
+
+        .hide{
+            display:none; 
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            
+            
+            fetch(`http://localhost:3000/read`)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    console.log(data.posts)
+                    data.posts.forEach((p) => {
+                        document.querySelector('.wrapper').innerHTML += `
+                        <div class="container" data-id=${p._id}>
+            
+                            <label for="title">${p.title}</label>
+                        
+                            <img src=${p.postImage}>
+                            <textarea class="body" disabled>${p.body}</textarea>
+                            <span class="lii">Likes:<span class="li">${p.likes}</span></span>
+                            <button class="like" style="width:100px;">Like</button>
+                            <button class="dislike" style="width:100px;">Dislike</button>
+<br/>
+                            <span style="border:1px solid black; width:150px;text-align:center;cursor:pointer;" class="add"><a href="comments.html?id=${p._id}">Add Comment</a></span>
+                            <span class="abc"><a href="user_list.html">Go Back</a></span>
+                            
+                        </div>`;
+
+                        /*
+
+                        document.querySelectorAll('.add').forEach((a) => {
+                            a.addEventListener('click', function (e) {
+                                alert('clicked'); 
+                                //const postId = e.target.parentElement.dataset.id; 
+                                console.log(e.target.parentElement.dataset.id); 
+                                fetch(`http://localhost:3000/comment/`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Accept': 'application/json'                         
+                                    },
+                                    body: JSON.stringify({
+                                        comment: document.querySelector('.comment_value').value
+                                    })
+                                }).then((res) => {
+                                    return res.json()
+                                }).then((data) => {
+                                    console.log(data)
+                                })
+                            })
+                        })
+
+                        */
+                    })
+
+                    document.querySelectorAll('.like').forEach((l) => {
+                        l.addEventListener('click', function (e) {
+                            //alert('like')
+                            console.log(e.target.parentElement.dataset.id)
+                            const userId = localStorage.getItem('userId'); 
+                            const id = e.target.parentElement.dataset.id; 
+                            fetch(`http://localhost:3000/like/${userId}`, {
+                                method: 'PUT', 
+                                headers: {
+                                    'Content-Type': 'application/json', 
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    postId: id, 
+                                })
+                            }).then((res) => {
+                                return res.json()
+                            }).then((data) => {
+                                console.log(data)
+                                window.location.reload();
+                            })
+
+                        })
+                    })
+
+                    document.querySelectorAll('.dislike').forEach((d) => {
+                        d.addEventListener('click', function (e) {
+                            //alert('like')
+                            console.log(e.target.parentElement.dataset.id)
+                            const userId = localStorage.getItem('userId');
+                            const id = e.target.parentElement.dataset.id;
+                            fetch(`http://localhost:3000/dislike/${userId}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    postId: id,
+                                })
+                            }).then((res) => {
+                                return res.json()
+                            }).then((data) => {
+                                console.log(data)
+                                window.location.reload(); 
+                            })
+                        })
+                    })
+                    
+                })
+        })
+
+
+
+
+        document.querySelector('.container').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            console.log(document.querySelector('.title').value + document.querySelector('.body').value)
+            alert('post created successfully')
+
+            fetch('http://localhost:3000/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: document.querySelector('.title').value, 
+                    body: document.querySelector('.body').value,
+                    userId: localStorage.getItem('userId')
+                })
+            }).then((res) => {
+                return res.json()
+            }).then((data) => {
+                console.log(data)
+            })
+             
+            //window.location.href = '/user_list.html';
+        })
+    </script>
+</body>
+</html>

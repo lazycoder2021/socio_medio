@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        * {
+            font-family: 'Segoe UI';
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        h2, span {
+            font-weight: 100;
+        }
+
+        .container{
+            width:800px;
+            margin:50px auto;
+            border:1px solid black;
+            padding:10px;
+        }
+
+        p{
+            font-size:18px;
+            margin:5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Some Pointers Regarding This App</h2>
+        <p>Test Credentials: amar, amar | akbar, akbar | anto, anto</p>
+        <p>Apart from the usual auth and crud, this app also allows image/file uploading.</p>
+        <p>To upload user profile photo, you should first choose file and click submit, then click update profile button to update the image</p>
+        <p>You can follow/unfollow users. But the feed route (though fetches the followers posts correctly, I'm not able to store it in a variable and pass it to frontend, for now the data gets console logged on the server side) does not work.</p>
+        <p>Very basic counter value based like/dislike is available. I realized adding user id based likes/dislikes is also easy to add, but didn't include it for now.</p>
+        <p>You can add comments too</p>
+        <p>To upload images while creating posts, you should again first upload the image by choosing file and hitting submit button, then get the image url returned by the server, and use it in image url input box while providing other post details.</p>
+        <p>View your posts button does not work. I didn't code it for now.</p>
+        <p>I realized that I write naive code (when I compared it with others on Github) but I continued coding my way, because that's the only way you can explore and learn. Then use the efficient way possible.</p>
+        <p>The app runs on mongo atlas, so you can download github code and npm install dependencies and you'll be good to run the app. You don't even need .env file.</p>
+        <p>The best way to proceed further is to add a rudimentary chat/video calling facility (apart from fixing all the errors and making the screens more user friendly). For that I have to learn a bit about socket and webrtc.</p>
+    </div>
+</body>
+</html>

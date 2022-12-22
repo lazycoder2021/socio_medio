@@ -1,0 +1,9 @@
+basic auth
+follow/followers >> but the feed is not covered exactly, though I am able to get the feed posts, just not able to store in a variable n pass
+basic like/dislike >> does not capture user id (though this can be done easily), just increases/decreases like count 
+file upload -- w.r.t profile image
+comments 
+basic session based auth 
+
+========================================
+
